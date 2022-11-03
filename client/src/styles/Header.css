@@ -1,0 +1,30 @@
+.header.hero{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    padding: 2rem 0;
+    margin: 0 4rem;
+}
+
+.header a{
+    color: #d9dc72;
+    font-family: 'OverpassBold', sans-serif;
+    font-size: 2rem;
+    font-weight: 100;
+    margin-right: 2.5rem;
+    margin-bottom: 0;
+    text-decoration: none;
+    text-shadow: -5px 5px #00abad;
+}
+
+.header button{
+    color: #d9dc72;
+    background: none;
+    border: none;
+}
+
+.header button svg{
+    width: 3rem;
+    height: 3rem;
+}

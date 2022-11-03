@@ -18,5 +18,6 @@ app.use(
 )
 
 require("./routes/user.routes")(app)
+require("./routes/facilities.routes")(app)
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`))

@@ -1,0 +1,98 @@
+.hero {
+    position: relative;
+    z-index: 1;
+    
+}
+
+.hero .title{
+    height: 100vh;
+    padding-right: 21rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50vw;
+    z-index: 1;
+}
+
+.hero .title>*{
+    z-index: 2;
+}
+
+.hero .background{
+    height: 100vh;
+    width: 50vw;
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+.hero .background>img{
+    position: fixed;
+    top: -15px;
+    object-fit: cover;
+    object-position: top;
+    width: 100%;
+}
+.hero .background>img:first-of-type{
+    right: -52%;
+    z-index: 3;
+}
+
+.hero .background>img:nth-child(2){
+    right: -49%;
+    z-index: 2;
+    opacity: .5;
+}
+
+.hero .background>img:last-of-type{
+    right: -46%;
+    z-index: 1;
+    opacity: .5;
+}
+
+.hero .title h1 {
+    color: #d9dc72;
+    font-family: 'NationalForestRegular';
+    font-size: 8.25rem;
+    font-weight: 100;
+    margin-top: 30vh;
+    margin-bottom: 0;
+    text-shadow: -8px 8px #00abad;
+    text-align: right;
+}
+
+
+.hero .title p {
+    color: #ad4200;
+    font-family: 'OverpassBold';
+    font-size: 2.25rem;
+    margin-top: 5vh;
+    margin-bottom: 0;
+    text-shadow: 3.5px 3.5px #dfa32e;
+    text-align: right;
+}
+
+.search {
+    margin-top: 5rem;
+    justify-content: flex-end;
+}
+
+.search input {
+    border: none;
+    border-radius: 35px;
+    font-size: 1.35rem;
+    padding: .75rem;
+    width: 23vw;
+}
+
+.search button{
+    background-color: #d9dc72;
+    border: none;
+    border-radius: 35px;
+    color: #ad4200;
+    font-family: 'OverpassBold';
+    font-size: 1.35rem;
+    padding: .85rem;
+    margin-left: -3rem;
+}
