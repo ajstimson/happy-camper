@@ -1,13 +1,15 @@
 import { useState, useEffect, useCallback, useRef } from "react"
+import { Marker, InfoBox } from "@react-google-maps/api"
+import axios from "axios"
 import MapStyles from "./MapStyles"
+import '../styles/Map.css'
 
-const libraries = ["places"]
+// const libraries = ["places"]
 
 const center = {
-	lat: 46.859757,
-	lng: -121.653757,
+	lat: 46.854611,
+	lng: -121.484082,
 }
-
 const options = {
 	styles: MapStyles,
 	disableDefaultUI: true,
@@ -15,30 +17,25 @@ const options = {
 }
 
 const Map = (props) => {
-	const { markers, setMarkers } = useState([])
-	const didMount = useRef(false)
 	const { GoogleMap, useLoadScript } = props
 	const { isLoaded, loadError } = useLoadScript({
 		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-		libraries,
+		// libraries,
 	})
+	const [ markers, setMarkers ] = useState([])
+	const [ showInfoWindow, setShowInfoWindow ] = useState({ show: false, id: null })
 
 	useEffect(() => {
-		const getFacilities = async (setMarkers) => {
-			try {
-				const res = await fetch(
-					`http://localhost:8000/api/facilities/${center.lat}/${center.lng}/50`
-				)
-				await res.json().then((data) => {
-					setMarkers(data)
-					console.log(data)
-				})
-			} catch (err) {
-				console.error(err.message)
-			}
-		}
-		getFacilities()
-	}, [markers, setMarkers])
+		// get facilities from database and set markers
+		axios.get(`http://localhost:8000/api/facilities/${center.lat}/${center.lng}/50`).then(
+			(response) => {
+				setMarkers(response.data)
+			}).catch(
+				(error) => {
+					console.log(error)
+				}
+			)
+	}, [setMarkers])
 
 	const mapContainerStyle = {
 		height: "100vh",
@@ -50,22 +47,44 @@ const Map = (props) => {
 		mapRef.current = map
 	}, [])
 
-	//   const [markers, setMarkers] = useState([]);
-	//   const [selected, setSelected] = useState(null);
-
 	if (loadError) return "Error"
 	if (!isLoaded) return "Loading..."
-
+	{markers && console.log(markers)}
 	return (
 		<GoogleMap
 			id="map"
 			mapContainerStyle={mapContainerStyle}
-			zoom={11}
+			zoom={10}
 			center={center}
 			options={options}
 			onLoad={onMapLoad}
 			zIndex="0"
-		></GoogleMap>
+		>
+			{markers && markers.map((marker, i) => (
+				<div key={marker.FacilityID}>
+				<Marker
+					key={marker.FacilityID}
+					position={{ lat: marker.FacilityLatitude, lng: marker.FacilityLongitude }}
+					name={marker.FacilityName}
+					icon={{
+						url: "/marker.svg",
+						scaledSize: new window.google.maps.Size(40, 40),
+						origin: new window.google.maps.Point(0, 0),
+						anchor: new window.google.maps.Point(15, 15),
+					}}
+					onClick={() => {
+						setShowInfoWindow({show: true, id: marker.FacilityID})
+					}}
+				/>
+				<InfoBox key={i} position={{ lat: marker.FacilityLatitude, lng: marker.FacilityLongitude }} style="width: 300px;" visible={showInfoWindow.id === marker.FacilityID && showInfoWindow.show}>
+					<div className="infobox">
+						<h3>{marker.FacilityName}</h3>
+						<p>{marker.FacilityDescription}</p>
+					</div>
+				</InfoBox>
+				</div>	
+			))}
+		</GoogleMap>
 	)
 }
 

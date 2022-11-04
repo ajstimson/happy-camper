@@ -1,9 +1,9 @@
 import { Input, Flex, IconButton } from "@chakra-ui/react"
 import { SearchIcon } from "@chakra-ui/icons"
-import usePlacesAutocomplete, {
-	getGeocode,
-	getLatLng,
-} from "use-places-autocomplete"
+// import usePlacesAutocomplete, {
+// 	getGeocode,
+// 	getLatLng,
+// } from "use-places-autocomplete"
 import useOnclickOutside from "react-cool-onclickoutside"
 
 // const baseUrl = `https://recreation.gov/api/v1/facilities/`
@@ -38,60 +38,60 @@ import useOnclickOutside from "react-cool-onclickoutside"
 const Search = (props) => {
 	// getCampgoundMonth()
 	const { GoogleMap, useLoadScript } = props
-	const {
-		ready,
-		value,
-		suggestions: { status, data },
-		setValue,
-		clearSuggestions,
-	} = usePlacesAutocomplete({
-		requestOptions: {
-			/* Define search scope here */
-		},
-		debounce: 300,
-	})
-	const ref = useOnclickOutside(() => {
-		// When user clicks outside of the component, we can dismiss
-		// the searched suggestions by calling this method
-		clearSuggestions()
-	})
+	// const {
+	// 	ready,
+	// 	value,
+	// 	suggestions: { status, data },
+	// 	setValue,
+	// 	clearSuggestions,
+	// } = usePlacesAutocomplete({
+	// 	requestOptions: {
+	// 		/* Define search scope here */
+	// 	},
+	// 	debounce: 300,
+	// })
+	// const ref = useOnclickOutside(() => {
+	// 	// When user clicks outside of the component, we can dismiss
+	// 	// the searched suggestions by calling this method
+	// 	clearSuggestions()
+	// })
 
 	const handleInput = (e) => {
 		// Update the keyword of the input element
-		setValue(e.target.value)
+		// setValue(e.target.value)
 	}
 
-	const handleSelect =
-		({ description }) =>
-		() => {
-			// When user selects a place, we can replace the keyword without request data from API
-			// by setting the second parameter to "false"
-			setValue(description, false)
-			clearSuggestions()
+	// const handleSelect =
+	// 	({ description }) =>
+	// 	() => {
+	// 		// When user selects a place, we can replace the keyword without request data from API
+	// 		// by setting the second parameter to "false"
+	// 		setValue(description, false)
+	// 		clearSuggestions()
 
-			// Get latitude and longitude via utility functions
-			getGeocode({ address: description }).then((results) => {
-				const { lat, lng } = getLatLng(results[0])
-				console.log("📍 Coordinates: ", { lat, lng })
-			})
-		}
+	// 		// Get latitude and longitude via utility functions
+	// 		getGeocode({ address: description }).then((results) => {
+	// 			const { lat, lng } = getLatLng(results[0])
+	// 			console.log("📍 Coordinates: ", { lat, lng })
+	// 		})
+	// 	}
 
-	const renderSuggestions = () =>
-		data.map((suggestion) => {
-			const {
-				place_id,
-				structured_formatting: { main_text, secondary_text },
-			} = suggestion
+	// const renderSuggestions = () =>
+	// 	data.map((suggestion) => {
+	// 		const {
+	// 			place_id,
+	// 			structured_formatting: { main_text, secondary_text },
+	// 		} = suggestion
 
-			return (
-				<li
-					key={place_id}
-					onClick={handleSelect(suggestion)}
-				>
-					<strong>{main_text}</strong> <small>{secondary_text}</small>
-				</li>
-			)
-		})
+	// 		return (
+	// 			<li
+	// 				key={place_id}
+	// 				onClick={handleSelect(suggestion)}
+	// 			>
+	// 				<strong>{main_text}</strong> <small>{secondary_text}</small>
+	// 			</li>
+	// 		)
+	// 	})
 
 	const handleClick = () => {
 		console.log("Search")
@@ -100,12 +100,12 @@ const Search = (props) => {
 	return (
 		<Flex
 			className="search"
-			ref={ref}
+			// ref={ref}
 		>
 			<input
-				value={value}
+				// value={value}
 				onChange={handleInput}
-				disabled={!ready}
+				// disabled={!ready}
 				placeholder="find your happy place..."
 			/>
 			<IconButton
@@ -117,7 +117,7 @@ const Search = (props) => {
 				onClick={() => handleClick()}
 			/>
 			{/* We can use the "status" to decide whether we should display the dropdown or not */}
-			{status === "OK" && <ul>{renderSuggestions()}</ul>}
+			{/* {status === "OK" && <ul>{renderSuggestions()}</ul>} */}
 		</Flex>
 	)
 }

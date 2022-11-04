@@ -1,12 +1,11 @@
 .hero {
     position: relative;
     z-index: 1;
-    
 }
 
 .hero .title{
     height: 100vh;
-    padding-right: 21rem;
+    padding-right: 5rem;
     position: absolute;
     right: 0;
     top: 0;
@@ -80,7 +79,7 @@
 
 .search input {
     border: none;
-    border-radius: 35px;
+    border-radius: 35px 0 0 35px;
     font-size: 1.35rem;
     padding: .75rem;
     width: 23vw;
@@ -89,10 +88,10 @@
 .search button{
     background-color: #d9dc72;
     border: none;
-    border-radius: 35px;
+    border-radius: 0 35px 35px 0;
     color: #ad4200;
     font-family: 'OverpassBold';
     font-size: 1.35rem;
-    padding: .85rem;
-    margin-left: -3rem;
+    padding: 2rem;
+    /* margin-left: -3rem; */
 }
