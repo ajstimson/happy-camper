@@ -9,29 +9,35 @@ function App() {
   const [loggedin, setLoggedin] = useState(false);
   const [user, setUser] = useState({});
 
-  useEffect(() => {
+  const handleUser = () => {
     axios
-      .get("http://localhost:8000/api/users/checkUser")
+      .get("http://localhost:8000/api/users/checkUser", {
+        withCredentials: true,
+        credentials: "include",
+      })
       .then((res) => {
-        if (res.data.email) {
-          setLoggedin(true);
-          setUser(res.data);
-        } else {
-          setLoggedin(false);
-          createTempUser();
-        }
+        console.log(res);
+        setLoggedin(true);
       })
       .catch((err) => {
-        console.log(err);
+        err.response.status === 401 ? createTempUser() : console.log(err);
       });
+  };
 
-    const createTempUser = () => {
-      axios
-        .post("http://localhost:8000/api/users/createTempUser")
-        .then((res) => {
-          setUser(res.data);
-        });
-    };
+  const createTempUser = () => {
+    console.log("createTempUser");
+    axios
+      .post("http://localhost:8000/api/users/createTempUser", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
+        setUser(res.data);
+      });
+  };
+
+  useEffect(() => {
+    handleUser();
   }, []);
 
   console.log("user", user);

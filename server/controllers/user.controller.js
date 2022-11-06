@@ -25,24 +25,27 @@ module.exports = {
     try {
       const user = await User.create({
         email: randomString.generate(10),
-        password: "temp",
+        password: "tempPassword",
+        confirmPassword: "tempPassword",
         status: "temp",
         opinions: [],
       });
       const userToken = jwt.sign({ _id: user._id, email: user.email }, SECRET);
-
+      console.log("userToken", userToken);
       res
         .status(201)
         .cookie("userToken", userToken, {
           httpOnly: true,
           expires: new Date(Date.now() + 90000),
+          domain: "localhost:3000",
         })
         .json({
           successMessage: "TempUser Created",
           status: user.status,
-          user: user.email,
+          user: user.id,
         });
     } catch (err) {
+      console.log(err);
       res.status(400).json(err);
     }
   },
