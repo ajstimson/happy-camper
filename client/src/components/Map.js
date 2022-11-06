@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Marker, InfoBox } from "@react-google-maps/api";
-import { Flex, CloseButton } from "@chakra-ui/react"
+import { Flex, CloseButton, Icon, Button } from "@chakra-ui/react";
+import { RiThumbUpLine, RiThumbDownLine } from "react-icons/ri";
 import axios from "axios";
 import MapStyles from "./MapStyles";
 import "../styles/Map.css";
@@ -24,6 +25,7 @@ const Map = (props) => {
     // libraries,
   });
   const [markers, setMarkers] = useState([]);
+  const [status, setStatus] = useState([]);
   const [showInfoWindow, setShowInfoWindow] = useState({
     show: false,
     id: null,
@@ -57,11 +59,21 @@ const Map = (props) => {
     setShowInfoWindow({ show: false, id: null });
   };
 
+  const handleLike = (liked, id) => {
+    // update user's liked facilities
+    axios
+      .put(`http://localhost:8000/api/user_meta/liked/${id}/${liked}`)
+      .then((response) => {
+        setStatus(...status, { id: id, liked: liked });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   if (loadError) return "Error";
   if (!isLoaded) return "Loading...";
-  {
-    markers && console.log(markers);
-  }
+  console.log(status);
   return (
     <GoogleMap
       id="map"
@@ -103,12 +115,26 @@ const Map = (props) => {
               }
             >
               <>
-                
-
                 <div className="inner-infobox">
                   <Flex justify="space-between">
-                    <h3>{marker.FacilityName}</h3>
-                    <CloseButton onClick={()=>handleClick()}/>
+                    <h3>
+                      <span>{marker.FacilityName}</span>
+                    </h3>
+                    <Flex>
+                      <Button
+                        className="like-button"
+                        onClick={(e) => handleLike(false, marker.FacilityID)}
+                      >
+                        <Icon as={RiThumbDownLine} />
+                      </Button>
+                      <Button
+                        className="like-button"
+                        onClick={(e) => handleLike(true, marker.FacilityID)}
+                      >
+                        <Icon as={RiThumbUpLine} />
+                      </Button>
+                    </Flex>
+                    <CloseButton onClick={() => handleClick()} />
                   </Flex>
 
                   <p
