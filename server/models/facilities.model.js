@@ -29,4 +29,7 @@ const FacilitySchema = new mongoose.Schema({
 	StayLimit: String,
 })
 
-module.exports = mongoose.model("Facility", FacilitySchema)
+const Facility = mongoose.model("Facility", FacilitySchema)
+
+module.exports = Facility
+

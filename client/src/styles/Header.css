@@ -1,4 +1,4 @@
-.header.hero{
+.header.hero {
     position: absolute;
     top: 0;
     right: 0;
@@ -7,24 +7,50 @@
     margin: 0 4rem;
 }
 
-.header a{
+.header:not(.hero) {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    padding: 1rem 4rem;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #00abad;
+}
+
+.header:not(.hero) h2 {
+    width: 66vw;
+    flex-shrink: 0;
+    font-family: "NationalForestRegular";
+    font-size: 2.5rem;
+    font-weight: 100;
     color: #d9dc72;
-    font-family: 'OverpassBold', sans-serif;
+}
+
+.header a {
+    color: #d9dc72;
+    font-family: "OverpassBold", sans-serif;
     font-size: 2rem;
     font-weight: 100;
     margin-right: 2.5rem;
     margin-bottom: 0;
     text-decoration: none;
     text-shadow: -5px 5px #00abad;
+    background: none;
 }
 
-.header button{
+.header button {
     color: #d9dc72;
     background: none;
     border: none;
 }
 
-.header button svg{
+.header a:hover {
+    background-color: none;
+    color: #dfa32e;
+    text-shadow: none;
+}
+
+.header button svg {
     width: 3rem;
     height: 3rem;
 }

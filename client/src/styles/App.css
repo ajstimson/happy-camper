@@ -1,0 +1,29 @@
+@font-face {
+    font-family: "NationalForestRegular";
+    src: local("NationalForestRegular"),
+        url(/public/fonts/NationalForestRegular.woff2) format("woff2");
+}
+
+@font-face {
+    font-family: "OverpassBold";
+    src: local("OverpassBold"),
+        url(/public/fonts/OverpassBold.woff2) format("woff2");
+}
+
+.app {
+    position: relative;
+}
+
+.chakra-modal__content header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #00abad;
+    color: #d9dc72;
+    font-family: "OverpassBold", sans-serif;
+    font-size: 2rem;
+    font-weight: 100;
+    text-shadow: -5px 5px #00abad;
+    justify-content: center;
+}

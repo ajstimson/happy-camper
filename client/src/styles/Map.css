@@ -1,8 +1,8 @@
-.infoBox{
+.infoBox {
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     height: auto;
     padding: 10px;
     position: absolute;
@@ -11,7 +11,7 @@
     z-index: 9999;
 }
 
-.infoBox>img {
+.infoBox > img {
     display: none;
 }
 
@@ -30,17 +30,31 @@
     background-color: #00abad;
 }
 
-.inner-infobox h3 span{
-
+.inner-infobox h3 span {
 }
-.inner-infobox button{
+.inner-infobox button {
     background-color: #00abad;
     color: #fff;
     border: none;
-    border-radius: 0 5px 5px 0;
-    padding:19.5px;
+    cursor: pointer;
+}
+
+.inner-infobox button.like-button {
+    background-color: #00abad;
+    color: #fff;
+    border-radius: 0;
+    height: 2.36em;
+    font-size: 1.5em;
+}
+
+.inner-infobox button.like-button:hover {
+    background-color: #dfa32e;
+}
+
+.inner-infobox button:not(.like-button) {
+    padding: 19.5px;
     margin: 0;
     font-size: 1em;
     font-weight: bold;
-    cursor: pointer;
+    border-radius: 0 5px 5px 0;
 }

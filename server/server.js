@@ -1,33 +1,31 @@
-const express = require("express");
-const app = express();
-const PORT = 8000;
-const cors = require("cors");
-require("dotenv").config();
-const cookieParser = require("cookie-parser");
-require("./config/mongoose.config");
-require("./config/jwt.config");
+const express = require("express")
+const app = express()
+const PORT = 8000
+const cors = require("cors")
+require("dotenv").config()
+const cookieParser = require("cookie-parser")
+require("./config/mongoose.config")
+require("./config/jwt.config")
 //middleware
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", req.headers.origin);
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+app.use(express.json(), express.urlencoded({ extended: true }))
+app.use(cookieParser())
 
-app.use(express.json(), express.urlencoded({ extended: true }));
-app.use(cookieParser());
+// app.use(
+// 	cors({
+// 		credentials: true,
+// 		origin: true,
+// 	})
+// )
 
-app.use(
-  cors({
+const corsConfig = {
+    origin: true,
     credentials: true,
-    origin: "http://localhost:3000",
-  })
-);
+}
 
-require("./routes/user.routes")(app);
-require("./routes/facilities.routes")(app);
+app.use(cors(corsConfig))
+app.options("http://localhost:3000", cors(corsConfig))
 
-app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
+require("./routes/facilities.routes")(app)
+require("./routes/user.routes")(app)
+
+app.listen(PORT, () => console.log(`Listening on port: ${PORT}`))

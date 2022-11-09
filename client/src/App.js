@@ -1,64 +1,138 @@
-import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import "./App.css";
+import { useEffect, useState } from "react"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import axios from "axios"
+import Header from "./components/Header"
+import Hero from "./components/Hero"
+import SearchPage from "./components/SearchPage"
+import "./styles/App.css"
 
 function App() {
-  const [loggedin, setLoggedin] = useState(false);
-  const [user, setUser] = useState({});
+    //This fixes missing cookie issue
+    axios.defaults.withCredentials = true
 
-  const handleUser = () => {
-    axios
-      .get("http://localhost:8000/api/users/checkUser", {
-        withCredentials: true,
-        credentials: "include",
-      })
-      .then((res) => {
-        console.log(res);
-        setLoggedin(true);
-      })
-      .catch((err) => {
-        err.response.status === 401 ? createTempUser() : console.log(err);
-      });
-  };
+    const [loggedin, setLoggedin] = useState(false)
+    const [user, setUser] = useState({})
 
-  const createTempUser = () => {
-    console.log("createTempUser");
-    axios
-      .post("http://localhost:8000/api/users/createTempUser", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res);
-        setUser(res.data);
-      });
-  };
+    const handleUser = () => {
+        //TODO: check for cookie and use that if it exists
+        axios
+            .post("http://localhost:8000/api/users/checkUser", {
+                withCredentials: true,
+                credentials: "include",
+            })
+            .then((res) => {
+                setUser(res.data)
+            })
+    }
 
-  useEffect(() => {
-    handleUser();
-  }, []);
+    // if no cookie exists, create temp user
+    useEffect(() => {
+        handleUser()
+    }, [])
 
-  console.log("user", user);
+    useEffect(() => {
+        user && user.status !== "temp" ? setLoggedin(true) : setLoggedin(false)
+    }, [user])
 
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Header page="Home" loggedin={loggedin} />
-                <Hero />
-              </>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+    const handleLogout = () => {
+        axios
+            .post("http://localhost:8000/api/users/logout", {
+                withCredentials: true,
+                credentials: "include",
+            })
+            .then((res) => {
+                handleUser()
+            })
+    }
+
+    const [center, setCenter] = useState({
+        lat: 46.854611,
+        lng: -121.484082,
+    })
+
+    const [markers, setMarkers] = useState([])
+
+    useEffect(() => {
+        // get facilities from database and set markers
+        axios
+            .get(
+                `http://localhost:8000/api/facilities/${center.lat}/${center.lng}/50`,
+                {
+                    withCredentials: true,
+                    // credentials: "include",
+                }
+            )
+            .then((response) => {
+                setMarkers(response.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }, [setMarkers, center])
+
+    console.log("user", user)
+
+    return (
+        <div className="App">
+            <BrowserRouter>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <>
+                                <Header
+                                    page="Home"
+                                    loggedin={loggedin}
+                                    user={user}
+                                    handleLogout={handleLogout}
+                                />
+                                <Hero
+                                    user={user}
+                                    center={center}
+                                    markers={markers}
+                                    setCenter={setCenter}
+                                />
+                            </>
+                        }
+                    />
+                    <Route
+                        path="/search"
+                        element={
+                            <>
+                                <Header
+                                    page="Search"
+                                    loggedin={loggedin}
+                                    handleLogout={handleLogout}
+                                />
+                                <SearchPage
+                                    user={user}
+                                    center={center}
+                                    markers={markers}
+                                    setCenter={setCenter}
+                                />
+                            </>
+                        }
+                    />
+                    <Route
+                        path="/dashboard"
+                        element={
+                            user.status === "user" ? (
+                                <>
+                                    <Header
+                                        page="Search"
+                                        loggedin={loggedin}
+                                        handleLogout={handleLogout}
+                                    />
+                                </>
+                            ) : (
+                                <Navigate to="/" />
+                            )
+                        }
+                    />
+                </Routes>
+            </BrowserRouter>
+        </div>
+    )
 }
 
-export default App;
+export default App
